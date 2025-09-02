@@ -1,0 +1,73 @@
+# Create a new parcel [Any Auth User]
+POST http://localhost:5175/api/parcel/create 
+content-type: application/json
+Accept: application/json
+
+{
+  "title":" string",
+  "weight": 1,
+  "height": 3,
+  "width": 2,
+  "receiver":{
+    "phone": "01642791171",
+    "email": "mdnahid6530@gmail.com",
+    "address": "Noakhali"
+  },
+  "sender":{
+    "phone": "01642791171",
+    "email": "mdnahid6530@gmail.com",
+    "address": "Dhaka"
+  },
+  "senderId": "68ac9523a7be6a9393e2a575",
+  "fees": 100
+}
+
+###
+# Get all parcel [Only Admin]
+GET http://localhost:5175/api/parcel
+content-type: application/json
+Accept: application/json
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTYyODgxNTksImV4cCI6MTc1NjM3NDU1OX0.ngnMa25vzxaV707nm3pvX9OuxAZgfBcuZZWEJ9V1Vks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFjOTUyM2E3YmU2YTkzOTNlMmE1NzUiLCJlbWFpbCI6Im5haGlkQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzU2Mjg4MjUyLCJleHAiOjE3NTYzNzQ2NTJ9.DGe8GoGO95C4oV0MIsZEE3x9K0YrTCRphDYBxnnnnGo
+
+###
+# Get Parcel By Id For Traking [Any User]
+GET http://localhost:5175/api/parcel/track/68aedc20f4859d105f14a1d1
+content-type: application/json
+Accept: application/json
+
+###
+# Cancel a Parcel [Only Sender if parcel not dispatch]
+POST http://localhost:5175/api/parcel/cancel/68aedc20f4859d105f14a1d1
+content-type: application/json
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTY4Mjc5NDEsImV4cCI6MTc1NjkxNDM0MX0.cPXJSD1Zh2VmckjPwTf6m-RsYgl0TtUBz7dutkTmx9M
+
+{
+  "message": "Parcel Cancel",
+  "description": ""
+}
+
+###
+# parcel status update [only admin]
+POST http://localhost:5175/api/parcel/status/68aedc20f4859d105f14a1d1
+content-type: application/json
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTY4Mjc5NDEsImV4cCI6MTc1NjkxNDM0MX0.cPXJSD1Zh2VmckjPwTf6m-RsYgl0TtUBz7dutkTmx9M
+
+{
+  "message": "On transit",
+  "description": ""
+}
+
+###
+# parcel delivery update [only receiver]
+POST http://localhost:5175/api/parcel/delivered/68aedc20f4859d105f14a1d1
+content-type: application/json
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTY4Mjc5NDEsImV4cCI6MTc1NjkxNDM0MX0.cPXJSD1Zh2VmckjPwTf6m-RsYgl0TtUBz7dutkTmx9M
+
+{
+  "message": "Delivered",
+  "description": ""
+}

@@ -1,0 +1,28 @@
+POST http://localhost:5100/api/user/register
+content-type: application/json
+Accept: application/json
+
+{
+    "name": "ariful",
+    "email": "nahid1@gmail.com",
+    "phone": "01642791171",
+    "password": "nahid",
+    "dob": "10-11-2025"
+}
+
+###
+GET http://localhost:5100/api/user/all-users
+content-type: application/json
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTYyMjE4NTgsImV4cCI6MTc1NjMwODI1OH0.83poC5_-HCLuZokHLaGWiMDCg_gfolSkKX-E9ijXAQs
+
+###
+GET http://localhost:5100/api/user/profile/68ac9523a7be6a9393e2a575
+content-type: application/json
+Accept: application/json
+
+###
+GET http://localhost:5100/api/user/profile
+content-type: application/json
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTYyNzMxMjQsImV4cCI6MTc1NjM1OTUyNH0.VCFSAWE14J-4H--CR-3v5EnjxtOEpY796PUVESA8V9w
