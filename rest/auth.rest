@@ -6,3 +6,13 @@ Accept: application/json
     "email": "nahid1@gmail.com",
     "password": "nahid"
 }
+
+###
+POST http://localhost:5175/api/auth/login
+content-type: application/json
+Accept: application/json
+
+{
+    "email": "nahid@gmail.com",
+    "password": "nahid"
+}

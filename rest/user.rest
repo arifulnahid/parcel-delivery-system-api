@@ -1,4 +1,4 @@
-POST http://localhost:5175/api/user/register
+POST http://localhost:5175/api/user/register [Any User]
 content-type: application/json
 Accept: application/json
 
@@ -11,18 +11,19 @@ Accept: application/json
 }
 
 ###
-GET http://localhost:5100/api/user/all-users
+GET http://localhost:5175/api/user/all-users [Only Admin]
 content-type: application/json
 Accept: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTYyMjE4NTgsImV4cCI6MTc1NjMwODI1OH0.83poC5_-HCLuZokHLaGWiMDCg_gfolSkKX-E9ijXAQs
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTcwODA3NzAsImV4cCI6MTc1NzE2NzE3MH0.f2hqIiXhQu7jXaR-xnxpcGFkosiZ65u-fuByK8SpUMs
 
 ###
-GET http://localhost:5100/api/user/profile/68ac9523a7be6a9393e2a575
+GET http://localhost:5175/api/user/profile/68ac9523a7be6a9393e2a575 [Auth User or Admin]
 content-type: application/json
 Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTcwODA3NzAsImV4cCI6MTc1NzE2NzE3MH0.f2hqIiXhQu7jXaR-xnxpcGFkosiZ65u-fuByK8SpUMs
 
 ###
-GET http://localhost:5100/api/user/profile
+GET http://localhost:5175/api/user/profile [Auth User]
 content-type: application/json
 Accept: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGFkYzg3NTQ4YTRmY2U3ZDdiYjczYTciLCJlbWFpbCI6Im5haGlkMUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTYyNzMxMjQsImV4cCI6MTc1NjM1OTUyNH0.VCFSAWE14J-4H--CR-3v5EnjxtOEpY796PUVESA8V9w

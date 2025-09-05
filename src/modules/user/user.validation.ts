@@ -6,7 +6,9 @@ export const createUserSchema = z.object({
     .string()
     .min(4, { message: "Name must be at least 2 characters long." })
     .max(25, { message: "Name cannot exceed 50 characters." }),
-  email: z.string(),
+  email: z
+    .string()
+    .regex(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please provide valid email"),
   phone: z.string().regex(/^(?:\+8801\d{9}|01\d{9})$/, {
     message:
       "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",

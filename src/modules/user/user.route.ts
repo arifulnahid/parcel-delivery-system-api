@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, getAllUsers, UserControllers } from "./user.controller";
+import { UserControllers } from "./user.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { createUserSchema, updateUserSchema } from "./user.validation";
 import { Role } from "./user.interface";
@@ -8,10 +8,24 @@ import { authorize } from "../../middlewares/authorize";
 
 const router = Router();
 
-router.post("/register", validateRequest(createUserSchema), createUser);
+router.post(
+  "/register",
+  validateRequest(createUserSchema),
+  UserControllers.createUser
+);
 router.get("/profile", checkAuth(), UserControllers.getUserById);
-router.get("/profile/:id", UserControllers.getProfile);
-router.get("/all-users", checkAuth(), authorize(Role.ADMIN), getAllUsers);
+router.get(
+  "/profile/:id",
+  checkAuth(),
+  authorize(Role.ADMIN),
+  UserControllers.getProfile
+);
+router.get(
+  "/all-users",
+  checkAuth(),
+  authorize(Role.ADMIN),
+  UserControllers.getAllUsers
+);
 router.patch(
   "/:id",
   validateRequest(updateUserSchema),

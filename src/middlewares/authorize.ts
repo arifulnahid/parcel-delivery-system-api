@@ -7,13 +7,15 @@ export const authorize =
   (...roles: string[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req?.user;
+    console.log(req.params);
+    console.log(user);
 
     if (!user) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
         "Your are not permitted to access"
       );
-    } else if (!roles.includes(user.role)) {
+    } else if (!roles.includes(user.role) && user.userId != req.params.id) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
         "Your are not permitted to access"

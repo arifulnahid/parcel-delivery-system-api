@@ -5,6 +5,7 @@ import { UserServices } from "./user.service";
 import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
 import { User } from "./user.model";
+import AppError from "../../config/AppError";
 
 export const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -82,7 +83,9 @@ const getUserById = catchAsync(
 );
 
 export const UserControllers = {
+  createUser,
   updateUser,
   getProfile,
   getUserById,
+  getAllUsers,
 };
