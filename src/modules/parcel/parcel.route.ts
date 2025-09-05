@@ -11,6 +11,7 @@ const router = Router();
 router.post(
   "/create",
   validateRequest(ParcelSchema),
+  checkAuth(),
   ParcelControllers.createParcel
 );
 router.get(

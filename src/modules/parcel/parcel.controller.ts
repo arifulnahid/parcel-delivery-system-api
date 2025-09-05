@@ -143,7 +143,7 @@ const confirmDelivery = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.ACCEPTED,
-      message: "Parcel Cancel Successfull",
+      message: "Parcel Delivered Successfull",
       data: parcel,
     });
   }
