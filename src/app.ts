@@ -1,8 +1,19 @@
 import express, { Request, Response } from "express";
+import cookieParser from "cookie-parser";
+import expressSession from "express-session";
 import { router } from "./routes";
+import { envVars } from "./config/env";
 
 const app = express();
 
+app.use(
+  expressSession({
+    secret: envVars.EXPRESS_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(cookieParser());
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {

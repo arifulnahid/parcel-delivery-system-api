@@ -1,4 +1,4 @@
-POST http://localhost:5100/api/user/register
+POST http://localhost:5175/api/user/register
 content-type: application/json
 Accept: application/json
 
