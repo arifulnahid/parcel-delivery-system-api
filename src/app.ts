@@ -3,6 +3,8 @@ import cookieParser from "cookie-parser";
 import expressSession from "express-session";
 import { router } from "./routes";
 import { envVars } from "./config/env";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import notFound from "./middlewares/notFound";
 
 const app = express();
 
@@ -24,5 +26,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api", router);
+app.use(globalErrorHandler);
+app.use(notFound);
 
 export default app;
