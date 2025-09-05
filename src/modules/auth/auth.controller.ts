@@ -4,10 +4,16 @@ import AppError from "../../config/AppError";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status-codes";
 import { AuthServices } from "./auth.service";
+import { setAuthCookie } from "../../utils/setCookie";
 
 const credentialsLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const loginInfo = await AuthServices.credentialsLogin(req.body);
+    // console.log({loginInfo});
+    setAuthCookie(res, {
+      accessToken: loginInfo.accessToken,
+      refreshToken: loginInfo.accessToken,
+    });
 
     sendResponse(res, {
       success: true,
