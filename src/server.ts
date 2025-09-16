@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { Server } from "http";
-import { app } from "./app";
+import app from "./app";
 import { envVars } from "./config/env";
 import mongoose from "mongoose";
 
