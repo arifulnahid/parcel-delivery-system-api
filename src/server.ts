@@ -1,13 +1,19 @@
 import express, { Request, Response } from "express";
 import { Server } from "http";
+import { app } from "./app";
 
-const app = express();
 const PORT = 5100;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Server Running");
-});
+let server: Server;
 
-const server: Server = app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
-});
+const startServer = async () => {
+  try {
+    server = app.listen(PORT, () => {
+      console.log(`Server listening on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+startServer();
