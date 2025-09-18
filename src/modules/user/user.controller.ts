@@ -3,10 +3,13 @@ import { User } from "./user.model";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatusCode from "http-status-codes";
+import bcrypt from "bcryptjs";
+import { envVars } from "../../config/env";
 
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = await User.create(req.body);
+    const hash = bcrypt.hashSync(req.body.password, envVars.BCRYPT_SALT_ROUND);
+    const user = await User.create({ ...req.body, password: hash });
 
     return sendResponse(res, {
       success: true,
