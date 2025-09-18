@@ -1,4 +1,3 @@
-import express, { Request, Response } from "express";
 import { Server } from "http";
 import app from "./app";
 import { envVars } from "./config/env";
@@ -11,6 +10,7 @@ let server: Server;
 const startServer = async () => {
   try {
     // Database Connection
+    console.log("Connecting to DB...");
     await mongoose.connect(envVars.DB_URI);
     console.log("Connected to DB!");
 
