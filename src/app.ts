@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import expressSession from "express-session";
 import { localStrategy } from "./config/passport";
 import { envVars } from "./config/env";
+import { notFoundHandler } from "./middlewares/notFound";
 
 const app = express();
 
@@ -28,5 +29,6 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api", router);
+app.use(notFoundHandler);
 
 export default app;
