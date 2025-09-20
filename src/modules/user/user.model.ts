@@ -12,7 +12,7 @@ const userSchema = new Schema<IUser>(
       unique: true,
     },
     phone: { type: String, minLength: 11, required: true, unique: true },
-    password: { type: String, minLength: 4, required: true },
+    password: { type: String, minLength: 4, required: true, select: false },
     dob: { type: String, required: true },
     role: { type: String, enum: Object.values(Role), default: Role.User },
     isActive: {
