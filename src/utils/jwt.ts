@@ -1,5 +1,4 @@
 import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
-import { IUser } from "../modules/user/user.inerface";
 
 export const generateToken = (
   payload: JwtPayload,

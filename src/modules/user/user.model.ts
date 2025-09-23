@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
 import { IsActive, IUser, Role } from "./user.inerface";
+import bcrypt from "bcryptjs";
+import { envVars } from "../../config/env";
 
 const userSchema = new Schema<IUser>(
   {
@@ -26,7 +28,26 @@ const userSchema = new Schema<IUser>(
   {
     versionKey: false,
     timestamps: true,
+    toJSON: {
+      transform(doc, ret, options) {
+        delete (ret as any).password;
+      },
+    },
   }
 );
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) next();
+
+  const hash = bcrypt.hashSync(this.password, envVars.BCRYPT_SALT_ROUND);
+  this.password = hash;
+  next();
+});
+
+userSchema.methods.matchPassword = async function (
+  inputPassword: string
+): Promise<boolean> {
+  return await bcrypt.compare(inputPassword, this.password);
+};
 
 export const User = model<IUser>("User", userSchema);

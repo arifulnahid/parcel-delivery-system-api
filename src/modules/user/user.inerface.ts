@@ -1,3 +1,5 @@
+import { Document, Types } from "mongoose";
+
 export enum Role {
   User = "USER",
   SuperAdmin = "SUPER_ADMIN",
@@ -12,7 +14,8 @@ export enum IsActive {
   BLOCKED = "BLOCKED",
 }
 
-export interface IUser {
+export interface IUser extends Document {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   phone: string;
@@ -22,4 +25,5 @@ export interface IUser {
   role?: Role;
   isActive?: IsActive;
   isDeleted?: boolean;
+  matchPassword: (inputPassword: string) => Promise<boolean>;
 }

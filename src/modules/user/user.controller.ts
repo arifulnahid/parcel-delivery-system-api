@@ -3,13 +3,11 @@ import { User } from "./user.model";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatusCode from "http-status-codes";
-import bcrypt from "bcryptjs";
-import { envVars } from "../../config/env";
+import AppErro from "../../config/appError";
 
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const hash = bcrypt.hashSync(req.body.password, envVars.BCRYPT_SALT_ROUND);
-    const user = await User.create({ ...req.body, password: hash });
+    const user = await User.create(req.body);
 
     return sendResponse(res, {
       success: true,
@@ -40,6 +38,9 @@ const getUserById = catchAsync(
     const userId = req.params.userId;
     const user = await User.findById(userId);
 
+    if (!user)
+      throw new AppErro(httpStatusCode.NOT_FOUND, "Account does not found");
+
     return sendResponse(res, {
       success: true,
       statusCode: httpStatusCode.OK,
@@ -54,6 +55,9 @@ const updateUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.userId;
     const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
+
+    if (!user)
+      throw new AppErro(httpStatusCode.NOT_FOUND, "Account does not found");
 
     return sendResponse(res, {
       success: true,
@@ -70,10 +74,35 @@ const deleteUser = catchAsync(
     const userId = req.params.userId;
     const user = await User.findByIdAndDelete(userId);
 
+    if (!user)
+      throw new AppErro(httpStatusCode.NOT_FOUND, "Account does not found");
+
     return sendResponse(res, {
       success: true,
       statusCode: httpStatusCode.ACCEPTED,
       message: "User Deleted Successfuly",
+      data: user,
+      meta: {},
+    });
+  }
+);
+
+const softDeleteUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.userId;
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (!user)
+      throw new AppErro(httpStatusCode.NOT_FOUND, "Account does not found");
+
+    return sendResponse(res, {
+      success: true,
+      statusCode: httpStatusCode.ACCEPTED,
+      message: "User Soft Deleted Successfuly",
       data: user,
       meta: {},
     });
@@ -86,4 +115,5 @@ export const UserController = {
   getUserById,
   updateUser,
   deleteUser,
+  softDeleteUser,
 };

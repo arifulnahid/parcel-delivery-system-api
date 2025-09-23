@@ -2,17 +2,26 @@ import { NextFunction, Request, Response } from "express";
 import httpStatusCode from "http-status-codes";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import { IUser } from "../user/user.inerface";
 import { generateToken, verifyToken } from "../../utils/jwt";
 import { envVars } from "../../config/env";
 import { setAuthCookie } from "../../utils/cookie";
+import bcrypt from "bcryptjs";
+import { AuthenticatedRequest } from "../../interfaces/auth.types";
+import { User } from "../user/user.model";
+import AppErro from "../../config/appError";
+import { IsActive } from "../user/user.inerface";
+import { JwtPayload } from "jsonwebtoken";
 
 const login = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { password, ...user } = req.user as IUser;
-    const accessToken = generateToken(user, envVars.JWT_ACCESS_SECRET, "1d");
-    const refreshToken = generateToken(user, envVars.JWT_ACCESS_SECRET, "1d");
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const user = req.user;
 
+    if (!user) {
+      new AppErro(httpStatusCode.BAD_REQUEST, "Login faild!");
+    }
+
+    const accessToken = generateToken(user!, envVars.JWT_ACCESS_SECRET, "1d");
+    const refreshToken = generateToken(user!, envVars.JWT_ACCESS_SECRET, "1d");
     setAuthCookie(res, { accessToken, refreshToken });
 
     sendResponse(res, {
@@ -47,19 +56,62 @@ const logout = catchAsync(
   }
 );
 
+const changePassword = catchAsync(
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const { password, newPassword } = req.body;
+    const userId = req.user?._id;
+
+    const user = await User.findById(userId).select("+password");
+    if (!user)
+      throw new AppErro(httpStatusCode.BAD_REQUEST, "User does not found");
+
+    const isPasswordMatch = await user?.matchPassword(password);
+    if (!isPasswordMatch)
+      throw new AppErro(httpStatusCode.FORBIDDEN, "Password Does not match");
+
+    user.password = newPassword;
+    await user.save();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatusCode.ACCEPTED,
+      message: "Password Change Successfully",
+      data: user,
+      meta: {},
+    });
+  }
+);
+
 const getAccessToken = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     if (!req.cookies.refreshToken) {
       res.send("Refresh Token not found");
     }
 
-    const { iat, exp, ...verifyUser } = verifyToken(
+    const verifyUser: JwtPayload = verifyToken(
       req.cookies.refreshToken,
       envVars.JWT_REFRESH_SECRET
     );
 
+    const user = await User.findById(verifyUser._id);
+
+    if (!user)
+      throw new AppErro(
+        httpStatusCode.BAD_REQUEST,
+        "Account does not not found"
+      );
+    if (user?.isDeleted)
+      throw new AppErro(httpStatusCode.BAD_REQUEST, "Account has been deleted");
+    if (user?.isActive != IsActive.ACTIVE)
+      throw new AppErro(httpStatusCode.BAD_REQUEST, "Account is not active");
+
     const accessToken = generateToken(
-      verifyUser,
+      {
+        _id: user?._id,
+        email: user?.email,
+        phone: user?.phone,
+        role: user?.role,
+      },
       envVars.JWT_ACCESS_SECRET,
       envVars.JWT_ACCESS_EXPIRES
     );
@@ -70,10 +122,10 @@ const getAccessToken = catchAsync(
       success: true,
       statusCode: httpStatusCode.ACCEPTED,
       message: "Loggedin Successfuly",
-      data: { accessToken, user: verifyUser },
+      data: { accessToken, user: user },
       meta: {},
     });
   }
 );
 
-export const AuthRoutes = { login, logout, getAccessToken };
+export const AuthRoutes = { login, logout, changePassword, getAccessToken };

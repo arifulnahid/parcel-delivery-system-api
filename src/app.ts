@@ -3,7 +3,7 @@ import { router } from "./routes";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import expressSession from "express-session";
-import { localStrategy } from "./config/passport";
+import { jwtStrategy, localStrategy } from "./config/passport";
 import { envVars } from "./config/env";
 import { notFoundHandler } from "./middlewares/notFound";
 import { errorHandler } from "./middlewares/errorHandler";
@@ -24,6 +24,7 @@ app.use(express.json());
 app.set("trust proxy", 1);
 app.use(express.urlencoded({ extended: true }));
 passport.use("local", localStrategy);
+passport.use("jwt", jwtStrategy);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Server Running");
