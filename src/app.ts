@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { router } from "./routes";
 import passport from "passport";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import expressSession from "express-session";
 import { jwtStrategy, localStrategy } from "./config/passport";
 import { envVars } from "./config/env";
@@ -10,6 +11,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 
+app.use(cors());
 app.use(
   expressSession({
     secret: envVars.EXPRESS_SESSION_SECRET,

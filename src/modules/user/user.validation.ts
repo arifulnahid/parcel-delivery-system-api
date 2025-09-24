@@ -3,20 +3,22 @@ import { IsActive, Role } from "./user.inerface";
 
 export const createUserZodSchema = z.object({
   name: z
-    .string()
+    .string({ error: "Please provide a valid name" })
     .min(4, { message: "Name must be at least 2 characters long." })
     .max(25, { message: "Name cannot exceed 50 characters." }),
   email: z
-    .string()
+    .string({ error: "Please provide a valid email" })
     .regex(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please provide valid email"),
-  phone: z.string().regex(/^(?:\+8801\d{9}|01\d{9})$/, {
-    message:
-      "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
-  }),
+  phone: z
+    .string({ error: "Please provide a valid phone" })
+    .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
+      message:
+        "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
+    }),
   password: z
-    .string()
+    .string({ error: "Please provide a valid password" })
     .min(4, { message: "Password must be at least 4 characters long." }),
-  dob: z.string(),
+  dob: z.string({ error: "Please provide a valid dob" }),
 });
 
 export const updateUserZodSchema = z.object({
