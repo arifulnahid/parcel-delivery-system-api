@@ -5,11 +5,10 @@ import { sendResponse } from "../../utils/sendResponse";
 import { generateToken, verifyToken } from "../../utils/jwt";
 import { envVars } from "../../config/env";
 import { setAuthCookie } from "../../utils/cookie";
-import bcrypt from "bcryptjs";
 import { AuthenticatedRequest } from "../../interfaces/auth.types";
 import { User } from "../user/user.model";
 import AppErro from "../../config/appError";
-import { IsActive } from "../user/user.inerface";
+import { IsActive, Role } from "../user/user.inerface";
 import { JwtPayload } from "jsonwebtoken";
 
 const login = catchAsync(
@@ -128,4 +127,40 @@ const getAccessToken = catchAsync(
   }
 );
 
-export const AuthRoutes = { login, logout, changePassword, getAccessToken };
+const changeUserRole = catchAsync(
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const userId = req.params.userId;
+    const role = req.body.role;
+    const userRole = req.user && req.user.role;
+
+    if (!role || !Object.values(Role).includes(role as Role)) {
+      throw new AppErro(
+        httpStatusCode.FORBIDDEN,
+        `Please provide a valid role`
+      );
+    } else if (userRole != Role.Admin || role == Role.SuperAdmin) {
+      throw new AppErro(
+        httpStatusCode.FORBIDDEN,
+        `${role} cannot be applied on this user`
+      );
+    }
+
+    const user = await User.findByIdAndUpdate(userId, { role }, { new: true });
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatusCode.ACCEPTED,
+      message: `Your Role Changed to ${role}`,
+      data: user,
+      meta: {},
+    });
+  }
+);
+
+export const AuthRoutes = {
+  login,
+  logout,
+  changePassword,
+  getAccessToken,
+  changeUserRole,
+};

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { AuthenticatedRequest } from "../interfaces/auth.types";
 import AppErro from "../config/appError";
 import httpStatusCode from "http-status-codes";
@@ -27,7 +27,7 @@ export const authorize = (...allowedRoles: string[]) => {
       }
 
       // 3. Check for user-specific authorization if a user ID parameter is provided.
-      if (!isAuthorized && userId) {
+      if (!isAuthorized && userId && allowedRoles.includes("AUTH")) {
         if (user!._id!.toString() === userId) {
           isAuthorized = true;
         }

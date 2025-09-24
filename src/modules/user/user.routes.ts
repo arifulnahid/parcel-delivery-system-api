@@ -22,26 +22,26 @@ router.get(
 router.get(
   "/:userId",
   passport.authenticate("jwt", { session: false }),
-  authorize(Role.Admin, Role.SuperAdmin),
+  authorize(Role.Admin, Role.SuperAdmin, "AUTH"),
   UserController.getUserById
 );
 router.patch(
   "/update/:userId",
   validateRequest(updateUserZodSchema),
   passport.authenticate("jwt", { session: false }),
-  authorize(Role.Admin, Role.SuperAdmin),
+  authorize(Role.Admin, Role.SuperAdmin, "AUTH"),
   UserController.updateUser
 );
 router.delete(
   "/delete/:userId",
   passport.authenticate("jwt", { session: false }),
-  authorize(Role.Admin, Role.SuperAdmin),
+  authorize(Role.Admin, Role.SuperAdmin, "AUTH"),
   UserController.deleteUser
 );
 router.patch(
   "/soft-delete/:userId",
   passport.authenticate("jwt", { session: false }),
-  authorize(Role.Admin, Role.SuperAdmin),
+  authorize(Role.Admin, Role.SuperAdmin, "AUTH"),
   UserController.softDeleteUser
 );
 
