@@ -11,7 +11,6 @@ export enum PaymentType {
 export interface IPayment {
   parcelId: Types.ObjectId;
   fees: number;
-  due: number;
   paidAmount: number;
   isPaid: boolean;
   paymentType: PaymentType;

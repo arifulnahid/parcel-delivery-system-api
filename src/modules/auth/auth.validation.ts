@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const authZodSchema = z.object({
-  email: z
+  username: z
     .string()
     .regex(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please provide valid email"),
   password: z

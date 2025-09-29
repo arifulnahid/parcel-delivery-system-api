@@ -33,7 +33,7 @@ export const ParcelZodSchema = z.object({
 export const parcelUpdateStausZodSchema = z.object({
   message: z.string(),
   description: z.string(),
-  status: Object.values(Status),
+  status: z.enum(Status),
 });
 
 export const createParcelZodSchema = ParcelZodSchema.pick({

@@ -6,10 +6,12 @@ import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "./env";
 
 export const localStrategy = new LocalStrategy(
-  { usernameField: "email" },
-  async function (email, password, done) {
+  { usernameField: "username" },
+  async function (username, password, done) {
     try {
-      const userDoc = await User.findOne({ email }).select("+password");
+      const userDoc = await User.findOne({
+        $or: [{ email: username }, { phone: username }],
+      }).select("+password");
 
       const isPasswordMatched = await userDoc?.matchPassword(password);
 

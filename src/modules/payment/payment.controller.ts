@@ -1,11 +1,21 @@
 import { Request, Response, NextFunction } from "express";
+import httpStatus from "http-status-codes";
 import { catchAsync } from "../../utils/catchAsync";
 import { Payment } from "./payment.model";
 import { sendResponse } from "../../utils/sendResponse";
+import { Parcel } from "../parcel/parcel.model";
+import AppErro from "../../config/appError";
 
 const makePayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const payment = Payment.create(req.body);
+    const p = req.body;
+    const parcelId = req.body;
+
+    const parcel = await Parcel.findById(parcelId);
+    if (!parcel)
+      throw new AppErro(httpStatus.BAD_REQUEST, "Parcel does not found");
+
+    const payment = Payment.create({ ...p, isPiad: p.paidAmount == p.fees });
 
     sendResponse(res, {
       success: true,
