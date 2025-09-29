@@ -19,7 +19,7 @@ router.post(
   PaymentControllers.makePayment
 );
 router.patch(
-  "/update",
+  "/update/:paymentId",
   validateRequest(updatePaymentZodSchema),
   passport.authenticate("jwt", { session: false }),
   authorize(Role.Admin, Role.Agent, Role.Rider),

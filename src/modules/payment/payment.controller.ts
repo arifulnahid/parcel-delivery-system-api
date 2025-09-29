@@ -9,7 +9,7 @@ import AppErro from "../../config/appError";
 const makePayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const p = req.body;
-    const parcelId = req.body;
+    const parcelId = req.body.parcelId;
 
     const parcel = await Parcel.findById(parcelId);
     if (!parcel)
